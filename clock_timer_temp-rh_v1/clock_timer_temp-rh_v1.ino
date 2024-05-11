@@ -1,8 +1,6 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-//#include <Adafruit_BME280.h>
-// #include <Fonts/FreeSans12pt7b.h>
 
 #include <DHT.h>
 
@@ -10,7 +8,7 @@
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+#define SCREEN_ADDRESS 0x3C // See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define DHT_PIN 2 // The Arduino Nano pin connected to DHT22 sensor
@@ -18,7 +16,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
-String tempString, rhString;
+String tempString, rhString;  // Empty string to keep values of temp and rh
 
 void setup()
 {
@@ -33,15 +31,13 @@ void setup()
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
   display.display();
-  delay(1000); // Pause for 2 seconds
+  delay(1000); // Pause for 1 seconds
 
   // Clear the buffer
   display.clearDisplay();
 
   display.setTextSize(2);      // text size
-  // display.setFont(&FreeSans12pt7b);
-  display.setTextColor(WHITE); // text color
-  // display.setCursor(0, 10);    // position to display
+  display.setTextColor(WHITE); // text color - in fact, in test version the display color is BLUE :)
 
   dht.begin();              // initialize DHT22 the temperature and humidity sensor
 
@@ -68,26 +64,9 @@ void loop()
   }
 
   display.setCursor(10, 0);
-  // Serial.println(displayString);    // print the temperature in Celsius to Serial Monitor
-  // oled_display_center(displayString); // display temperature and humidity on OLED
   display.println(tempString); // text to display
   display.setCursor(10, 17);
   display.println(rhString);
   display.display();
   display.clearDisplay();
 }
-
-// void oled_display_center(String text) {
-//   int16_t x1;
-//   int16_t y1;
-//   uint16_t width;
-//   uint16_t height;
-
-//   display.getTextBounds(text, 0, 0, &x1, &y1, &width, &height);
-
-//   // center the display both horizontally and vertically
-//   display.clearDisplay(); // clear display
-//   display.setCursor((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2);
-//   display.println(text); // text to display
-//   display.display();
-// }
